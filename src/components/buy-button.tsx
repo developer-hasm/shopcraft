@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Button } from "@/components/ui/button";
+import { LOGIN_PATH } from "@/config/auth";
 import {
   createCheckoutSession,
   type CheckoutActionState,
@@ -23,7 +24,7 @@ export function BuyButton({ productId, isLoggedIn }: BuyButtonProps) {
     return (
       <div>
         <a
-          href="/login"
+          href={LOGIN_PATH}
           className={buttonVariants({ size: "lg", className: "w-full sm:w-auto" })}
         >
           Sign in to Buy
@@ -39,7 +40,10 @@ export function BuyButton({ productId, isLoggedIn }: BuyButtonProps) {
     <form action={formAction}>
       <input type="hidden" name="productId" value={productId} />
       {state?.error && (
-        <div className="mb-3 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <div
+          role="alert"
+          className="mb-3 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
+        >
           {state.error}
         </div>
       )}

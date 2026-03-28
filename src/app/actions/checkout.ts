@@ -9,6 +9,7 @@ import {
   STRIPE_CURRENCY,
   CHECKOUT_SUCCESS_PATH,
   CHECKOUT_CANCEL_PATH,
+  ORDER_STATUS,
 } from "@/config/stripe";
 
 export interface CheckoutActionState {
@@ -80,13 +81,18 @@ export async function createCheckoutSession(
 
     // Create pending order
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase.from("orders") as any).insert({
+    const { error: orderError } = await (supabase.from("orders") as any).insert({
       buyer_id: user.id,
       product_id: product.id,
       stripe_session_id: session.id,
       amount: product.price,
-      status: "pending",
+      status: ORDER_STATUS.PENDING,
     });
+
+    if (orderError) {
+      console.error("Order insert error:", orderError);
+      return { error: "Could not create order. Please try again." };
+    }
   } catch (err) {
     console.error("Checkout error:", err);
     return { error: "Something went wrong. Please try again." };
