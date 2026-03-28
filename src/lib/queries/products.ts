@@ -52,7 +52,10 @@ export async function getProducts(
 ): Promise<ProductListItem[]> {
   const supabase = await createClient();
 
-  let query = supabase.from("products").select(PRODUCT_SELECT);
+  let query = supabase
+    .from("products")
+    .select(PRODUCT_SELECT)
+    .is("deleted_at", null);
 
   if (options.category) {
     // First get the category ID by slug, then filter
@@ -95,6 +98,24 @@ export async function getFeaturedProducts(): Promise<ProductListItem[]> {
   return (data as unknown as ProductQueryRaw[]).map(flattenProduct);
 }
 
+export async function getProductsBySeller(
+  userId: string
+): Promise<ProductListItem[]> {
+  const supabase = await createClient();
+
+  // Seller can see all their products including draft/inactive
+  const { data, error } = await supabase
+    .from("products")
+    .select(PRODUCT_SELECT)
+    .eq("seller_id", userId)
+    .is("deleted_at", null)
+    .order("created_at", { ascending: false });
+
+  if (error || !data) return [];
+
+  return (data as unknown as ProductQueryRaw[]).map(flattenProduct);
+}
+
 export async function getProductById(
   id: string
 ): Promise<ProductListItem | null> {
@@ -104,6 +125,7 @@ export async function getProductById(
     .from("products")
     .select(PRODUCT_SELECT)
     .eq("id", id)
+    .is("deleted_at", null)
     .single();
 
   if (error || !data) return null;
