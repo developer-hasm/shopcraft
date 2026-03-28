@@ -82,6 +82,33 @@ export interface Database {
           is_featured?: boolean;
           deleted_at?: string | null;
         };
+        };
+      orders: {
+        Row: {
+          id: string;
+          buyer_id: string;
+          product_id: string;
+          stripe_session_id: string | null;
+          stripe_payment_intent_id: string | null;
+          amount: number;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          buyer_id: string;
+          product_id: string;
+          stripe_session_id?: string | null;
+          stripe_payment_intent_id?: string | null;
+          amount: number;
+          status?: string;
+        };
+        Update: {
+          stripe_session_id?: string | null;
+          stripe_payment_intent_id?: string | null;
+          amount?: number;
+          status?: string;
+        };
       };
     };
   };

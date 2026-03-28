@@ -3,11 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Container } from "@/components/container";
+import { BuyButton } from "@/components/buy-button";
 import { formatPrice } from "@/lib/format";
 import { getProductById } from "@/lib/queries/products";
+import { createClient } from "@/lib/supabase/server";
 import { CATEGORY_EMOJI } from "@/types/product";
 import type { ProductCategory } from "@/types/product";
 
@@ -36,11 +37,18 @@ export default async function ProductDetailPage({
   params,
 }: ProductPageProps) {
   const { id } = await params;
-  const product = await getProductById(id);
+  const [product, supabase] = await Promise.all([
+    getProductById(id),
+    createClient(),
+  ]);
 
   if (!product) {
     notFound();
   }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const emoji =
     CATEGORY_EMOJI[product.category_name as ProductCategory] ?? "📦";
@@ -95,12 +103,9 @@ export default async function ProductDetailPage({
           {/* Price + Buy */}
           <div className="mt-auto pt-8">
             <p className="text-3xl font-bold">{formatPrice(product.price)}</p>
-            <Button size="lg" className="mt-4 w-full sm:w-auto" disabled>
-              Buy Now (Coming Soon)
-            </Button>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Secure payment powered by Stripe. Instant digital delivery.
-            </p>
+            <div className="mt-4">
+              <BuyButton productId={product.id} isLoggedIn={!!user} />
+            </div>
           </div>
         </div>
       </div>
