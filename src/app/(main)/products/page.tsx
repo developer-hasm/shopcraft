@@ -1,19 +1,33 @@
 import type { Metadata } from "next";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
 import { Container } from "@/components/container";
 import { ProductCard } from "@/components/product-card";
-import { ALL_PRODUCTS } from "@/data/products";
-import { FILTER_OPTIONS } from "@/types/product";
-import { SITE_NAME } from "@/config/site";
+import { CategoryFilter } from "@/components/category-filter";
+import { ProductSearch } from "@/components/product-search";
+import { getProducts } from "@/lib/queries/products";
+import { getCategories } from "@/lib/queries/categories";
 
 export const metadata: Metadata = {
-  title: `Products | ${SITE_NAME}`,
-  description: "Browse our collection of premium digital products — templates, icons, fonts, and more.",
+  title: "Products",
+  description:
+    "Browse our collection of premium digital products — templates, icons, fonts, and more.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const category =
+    typeof params.category === "string" ? params.category : undefined;
+  const search = typeof params.q === "string" ? params.q : undefined;
+
+  const [products, categories] = await Promise.all([
+    getProducts({ category, search }),
+    getCategories(),
+  ]);
+
   return (
     <Container className="py-12">
       {/* Header */}
@@ -26,34 +40,33 @@ export default function ProductsPage() {
 
       {/* Filters */}
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex gap-2 overflow-x-auto" role="group" aria-label="Filter by category">
-          {FILTER_OPTIONS.map((category) => (
-            <Button
-              key={category}
-              variant={category === "All" ? "default" : "outline"}
-              size="sm"
-              aria-pressed={category === "All"}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search products..."
-            className="pl-9"
-            aria-label="Search products"
-          />
-        </div>
+        <CategoryFilter
+          categories={categories}
+          activeSlug={category}
+          currentSearch={search}
+        />
+        <Suspense>
+          <ProductSearch />
+        </Suspense>
       </div>
 
       {/* Product Grid */}
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {ALL_PRODUCTS.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {products.length > 0 ? (
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-16 text-center">
+          <p className="text-lg font-medium text-muted-foreground">
+            No products found
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Try adjusting your filters or search query
+          </p>
+        </div>
+      )}
     </Container>
   );
 }

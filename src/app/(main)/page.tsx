@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/container";
 import { ProductCard } from "@/components/product-card";
-import { FEATURED_PRODUCTS } from "@/data/products";
+import { getFeaturedProducts } from "@/lib/queries/products";
 import { SITE_NAME } from "@/config/site";
 
 interface Feature {
@@ -32,7 +32,9 @@ const FEATURES: Feature[] = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const featuredProducts = await getFeaturedProducts();
+
   return (
     <div>
       {/* Hero Section */}
@@ -91,7 +93,7 @@ export default function Home() {
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURED_PRODUCTS.map((product) => (
+            {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

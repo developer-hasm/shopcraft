@@ -12,9 +12,9 @@ export interface NavLink {
 
 export const NAV_LINKS: readonly NavLink[] = [
   { href: "/products", label: "Products" },
-  { href: "/products?category=Templates", label: "Templates" },
-  { href: "/products?category=Icons", label: "Icons" },
-  { href: "/products?category=Fonts", label: "Fonts" },
+  { href: "/products?category=templates", label: "Templates" },
+  { href: "/products?category=icons", label: "Icons" },
+  { href: "/products?category=fonts", label: "Fonts" },
 ] as const;
 
 export const FOOTER_PRODUCT_LINKS: readonly NavLink[] = NAV_LINKS.filter(
