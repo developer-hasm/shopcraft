@@ -253,7 +253,12 @@ const UI_COMPONENTS = [
 ];
 
 export function generateUIComponent(title: string): Buffer {
-  const component = UI_COMPONENTS[Math.floor(Math.random() * UI_COMPONENTS.length)];
+  // Match component to title keyword
+  const lower = title.toLowerCase();
+  const match = UI_COMPONENTS.find(
+    (c) => lower.includes(c.name.replace(/s$/, "")) // "buttons" -> "button", etc.
+  );
+  const component = match ?? UI_COMPONENTS[Math.floor(Math.random() * UI_COMPONENTS.length)];
   return Buffer.from(component.html, "utf-8");
 }
 
