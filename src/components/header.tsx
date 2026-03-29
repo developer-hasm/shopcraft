@@ -1,18 +1,10 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingBag, Menu, Search, User, LogOut } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -31,6 +23,66 @@ export interface HeaderUser {
 function getUserInitial(user: HeaderUser): string {
   const name = user.displayName || user.email || "?";
   return name.charAt(0).toUpperCase();
+}
+
+function UserMenu({ user }: { user: HeaderUser }) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="User menu"
+        aria-expanded={open}
+      >
+        {getUserInitial(user)}
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-10 z-50 w-56 rounded-lg border bg-popover p-1 shadow-md">
+          <div className="px-3 py-2">
+            <p className="text-sm font-medium">
+              {user.displayName || "User"}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user.email}
+            </p>
+          </div>
+          <div className="h-px bg-border my-1" />
+          <Link
+            href={DASHBOARD_PATH}
+            className="block rounded-md px-3 py-2 text-sm hover:bg-accent transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            Dashboard
+          </Link>
+          <div className="h-px bg-border my-1" />
+          <form action={logout}>
+            <button
+              type="submit"
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent transition-colors"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function Header({ user }: { user: HeaderUser | null }) {
@@ -67,41 +119,8 @@ export function Header({ user }: { user: HeaderUser | null }) {
           </button>
 
           {user ? (
-            /* Logged in: Avatar dropdown */
-            <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="text-xs">
-                    {getUserInitial(user)}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="font-normal">
-                  <p className="text-sm font-medium">
-                    {user.displayName || "User"}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {user.email}
-                  </p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href={DASHBOARD_PATH} className="w-full">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <form action={logout}>
-                  <DropdownMenuItem>
-                    <button type="submit" className="flex w-full items-center gap-2">
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
-                    </button>
-                  </DropdownMenuItem>
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserMenu user={user} />
           ) : (
-            /* Not logged in: Sign in link */
             <Link
               href={LOGIN_PATH}
               className={buttonVariants({ variant: "ghost", size: "icon" })}
