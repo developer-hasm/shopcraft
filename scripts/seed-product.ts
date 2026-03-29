@@ -43,44 +43,44 @@ const PRODUCT_POOL: ProductDef[] = [
   {
     title: "E-commerce Dashboard Template",
     description: "A complete e-commerce admin dashboard with analytics, order management, and inventory tracking. Built with modern HTML and CSS.",
-    price: 15000, categorySlug: "templates", fileExt: "html",
+    price: 2000, categorySlug: "templates", fileExt: "html",
     generateFile: generateTemplate,
   },
   {
     title: "Blog Starter Kit",
     description: "A minimal blog template with dark mode and SEO optimization. Perfect for developers and writers.",
-    price: 8000, categorySlug: "templates", fileExt: "html",
+    price: 1000, categorySlug: "templates", fileExt: "html",
     generateFile: generateTemplate,
   },
   {
     title: "SaaS Landing Page Template",
     description: "High-converting landing page template with pricing tables, testimonials, and CTA sections.",
-    price: 12000, categorySlug: "templates", fileExt: "html",
+    price: 1500, categorySlug: "templates", fileExt: "html",
     generateFile: generateTemplate,
   },
   {
     title: "Portfolio Website Template",
     description: "A sleek portfolio template for designers and developers. Includes project gallery and contact form.",
-    price: 6000, categorySlug: "templates", fileExt: "html",
+    price: 1000, categorySlug: "templates", fileExt: "html",
     generateFile: generateTemplate,
   },
   // Icons
   {
     title: "Outline Icon Pack - 200 Icons",
     description: "A comprehensive set of outline-style SVG icons for web and mobile apps.",
-    price: 10000, categorySlug: "icons", fileExt: "svg",
+    price: 2000, categorySlug: "icons", fileExt: "svg",
     generateFile: generateIconSet,
   },
   {
     title: "Animated Icon Set",
     description: "Beautifully crafted SVG icons in multiple styles. Perfect for UI design.",
-    price: 18000, categorySlug: "icons", fileExt: "svg",
+    price: 1500, categorySlug: "icons", fileExt: "svg",
     generateFile: generateIconSet,
   },
   {
     title: "Social Media Icon Pack",
     description: "Complete set of social media brand icons in SVG format. 40+ platforms covered.",
-    price: 4000, categorySlug: "icons", fileExt: "svg",
+    price: 3000, categorySlug: "icons", fileExt: "svg",
     generateFile: generateIconSet,
   },
   // Graphics
@@ -93,13 +93,13 @@ const PRODUCT_POOL: ProductDef[] = [
   {
     title: "UI Illustration Pack",
     description: "Custom SVG illustrations for web interfaces. Covers onboarding, empty states, and errors.",
-    price: 14000, categorySlug: "graphics", fileExt: "svg",
+    price: 5000, categorySlug: "graphics", fileExt: "svg",
     generateFile: generateGraphic,
   },
   {
     title: "Geometric Pattern Collection",
     description: "Seamless geometric SVG patterns including various styles and color schemes.",
-    price: 7000, categorySlug: "graphics", fileExt: "svg",
+    price: 3000, categorySlug: "graphics", fileExt: "svg",
     generateFile: generateGraphic,
   },
   // Cheatsheets
