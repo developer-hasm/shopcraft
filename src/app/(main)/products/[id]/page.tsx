@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, User } from "lucide-react";
@@ -66,14 +67,25 @@ export default async function ProductDetailPage({
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
         {/* Image / Preview */}
-        <div className="aspect-[4/3] rounded-xl bg-muted flex items-center justify-center">
-          <span
-            className="text-8xl text-muted-foreground/30"
-            role="img"
-            aria-hidden="true"
-          >
-            {emoji}
-          </span>
+        <div className="aspect-[4/3] rounded-xl bg-muted flex items-center justify-center relative overflow-hidden">
+          {product.image_url ? (
+            <Image
+              src={product.image_url}
+              alt={product.title}
+              fill
+              className="object-cover rounded-xl"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
+          ) : (
+            <span
+              className="text-8xl text-muted-foreground/30"
+              role="img"
+              aria-hidden="true"
+            >
+              {emoji}
+            </span>
+          )}
         </div>
 
         {/* Product Info */}

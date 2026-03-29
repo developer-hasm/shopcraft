@@ -110,6 +110,63 @@ export interface Database {
           status?: string;
         };
       };
+      product_images: {
+        Row: {
+          id: string;
+          product_id: string;
+          url: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          product_id: string;
+          url: string;
+          sort_order?: number;
+        };
+        Update: {
+          url?: string;
+          sort_order?: number;
+        };
+      };
+      product_files: {
+        Row: {
+          id: string;
+          product_id: string;
+          file_name: string;
+          file_path: string;
+          file_size: number;
+          mime_type: string;
+          created_at: string;
+        };
+        Insert: {
+          product_id: string;
+          file_name: string;
+          file_path: string;
+          file_size: number;
+          mime_type: string;
+        };
+        Update: {
+          file_name?: string;
+          file_path?: string;
+          file_size?: number;
+          mime_type?: string;
+        };
+      };
+      downloads: {
+        Row: {
+          id: string;
+          order_id: string;
+          user_id: string;
+          ip_address: string | null;
+          downloaded_at: string;
+        };
+        Insert: {
+          order_id: string;
+          user_id: string;
+          ip_address?: string | null;
+        };
+        Update: Record<string, never>;
+      };
     };
   };
 }

@@ -19,7 +19,7 @@ export default async function PurchasesPage() {
       {orders.length > 0 ? (
         <div className="space-y-3">
           {orders.map((order) => (
-            <OrderCard key={order.id} order={order} />
+            <OrderCard key={order.id} order={order} showDownload />
           ))}
         </div>
       ) : (

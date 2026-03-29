@@ -1,10 +1,15 @@
 "use client";
 
 import { useActionState } from "react";
+import { ImageIcon, FileUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MIN_PRODUCT_PRICE } from "@/config/products";
+import {
+  MIN_PRODUCT_PRICE,
+  MAX_IMAGES_PER_PRODUCT,
+  ALLOWED_IMAGE_TYPES,
+} from "@/config/products";
 import {
   createProduct,
   updateProduct,
@@ -26,7 +31,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
   >(action, null);
 
   return (
-    <form action={formAction} className="space-y-6 max-w-xl">
+    <form action={formAction} className="space-y-6 max-w-xl" encType="multipart/form-data">
       {isEdit && (
         <input type="hidden" name="productId" value={product.id} />
       )}
@@ -97,6 +102,48 @@ export function ProductForm({ categories, product }: ProductFormProps) {
             </option>
           ))}
         </select>
+      </div>
+
+      {/* Product Images */}
+      <div className="space-y-2">
+        <Label htmlFor="images">
+          <span className="flex items-center gap-2">
+            <ImageIcon className="h-4 w-4" />
+            Product Images
+          </span>
+        </Label>
+        <Input
+          id="images"
+          name="images"
+          type="file"
+          multiple
+          accept={ALLOWED_IMAGE_TYPES.join(",")}
+          disabled={isPending}
+        />
+        <p className="text-xs text-muted-foreground">
+          Upload up to {MAX_IMAGES_PER_PRODUCT} images (JPEG, PNG, WebP). Max 5MB each.
+          {isEdit && " New images will be added to existing ones."}
+        </p>
+      </div>
+
+      {/* Product File */}
+      <div className="space-y-2">
+        <Label htmlFor="productFile">
+          <span className="flex items-center gap-2">
+            <FileUp className="h-4 w-4" />
+            Product File
+          </span>
+        </Label>
+        <Input
+          id="productFile"
+          name="productFile"
+          type="file"
+          disabled={isPending}
+        />
+        <p className="text-xs text-muted-foreground">
+          Upload the digital product file (ZIP, PDF, etc.). Max 50MB.
+          {isEdit && " Uploading a new file will add to existing files."}
+        </p>
       </div>
 
       <Button type="submit" disabled={isPending}>

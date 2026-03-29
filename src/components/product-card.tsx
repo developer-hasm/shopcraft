@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,14 +17,24 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.id}`}>
       <Card className="group cursor-pointer overflow-hidden transition-all hover:shadow-lg">
-        <div className="aspect-[4/3] bg-muted flex items-center justify-center">
-          <span
-            className="text-5xl text-muted-foreground/30"
-            role="img"
-            aria-hidden="true"
-          >
-            {emoji}
-          </span>
+        <div className="aspect-[4/3] bg-muted flex items-center justify-center relative overflow-hidden">
+          {product.image_url ? (
+            <Image
+              src={product.image_url}
+              alt={product.title}
+              fill
+              className="object-cover transition-transform group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          ) : (
+            <span
+              className="text-5xl text-muted-foreground/30"
+              role="img"
+              aria-hidden="true"
+            >
+              {emoji}
+            </span>
+          )}
         </div>
         <CardContent className="p-4">
           <Badge variant="secondary" className="mb-2 text-xs">
