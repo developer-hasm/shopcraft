@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { ShoppingBag, Menu, Search, User, LogOut } from "lucide-react";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -21,19 +20,20 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { SITE_NAME, NAV_LINKS } from "@/config/site";
-import { LOGIN_PATH, DASHBOARD_PATH, USER_METADATA_DISPLAY_NAME } from "@/config/auth";
+import { LOGIN_PATH, DASHBOARD_PATH } from "@/config/auth";
 import { logout } from "@/app/actions/auth";
 
-interface HeaderProps {
-  user: SupabaseUser | null;
+export interface HeaderUser {
+  email: string;
+  displayName: string;
 }
 
-function getUserInitial(user: SupabaseUser): string {
-  const name = user.user_metadata?.[USER_METADATA_DISPLAY_NAME] || user.email || "?";
+function getUserInitial(user: HeaderUser): string {
+  const name = user.displayName || user.email || "?";
   return name.charAt(0).toUpperCase();
 }
 
-export function Header({ user }: HeaderProps) {
+export function Header({ user }: { user: HeaderUser | null }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -79,7 +79,7 @@ export function Header({ user }: HeaderProps) {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="font-normal">
                   <p className="text-sm font-medium">
-                    {user.user_metadata?.[USER_METADATA_DISPLAY_NAME] || "User"}
+                    {user.displayName || "User"}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
                     {user.email}
