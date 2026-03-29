@@ -6,7 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/container";
 import { ProductCard } from "@/components/product-card";
 import { getFeaturedProducts } from "@/lib/queries/products";
+import { createClient } from "@/lib/supabase/server";
 import { SITE_NAME } from "@/config/site";
+import { SIGNUP_PATH } from "@/config/auth";
 
 interface Feature {
   icon: LucideIcon;
@@ -32,8 +34,18 @@ const FEATURES: Feature[] = [
   },
 ];
 
+const NEW_PRODUCT_PATH = "/dashboard/products/new";
+
 export default async function Home() {
-  const featuredProducts = await getFeaturedProducts();
+  const [featuredProducts, supabase] = await Promise.all([
+    getFeaturedProducts(),
+    createClient(),
+  ]);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const sellPath = user ? NEW_PRODUCT_PATH : SIGNUP_PATH;
 
   return (
     <div>
@@ -62,7 +74,7 @@ export default async function Home() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/signup"
+                href={sellPath}
                 className={buttonVariants({ size: "lg", variant: "outline" })}
               >
                 Start Selling
@@ -137,7 +149,7 @@ export default async function Home() {
               products today.
             </p>
             <Link
-              href="/signup"
+              href={sellPath}
               className={buttonVariants({ size: "lg", variant: "secondary", className: "mt-8 gap-2" })}
             >
               Create Your Store
