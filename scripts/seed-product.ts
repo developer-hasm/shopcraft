@@ -8,7 +8,13 @@
 import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 import archiver from "archiver";
-import { generateThumbnail } from "./generate-thumbnail";
+import {
+  generateTemplateThumbnail,
+  generateIconThumbnail,
+  generateGraphicThumbnail,
+  generateCheatsheetThumbnail,
+  generateWallpaperThumbnail,
+} from "./generate-thumbnail";
 import {
   generateTemplate,
   generateIconSet,
@@ -217,8 +223,27 @@ async function seedProducts() {
       fileContent
     );
 
-    // 3. Generate thumbnail
-    const thumbnailBuffer = await generateThumbnail(def.title, slug);
+    // 3. Generate thumbnail based on category
+    let thumbnailBuffer: Buffer;
+    switch (slug) {
+      case "templates":
+        thumbnailBuffer = await generateTemplateThumbnail(fileContent);
+        break;
+      case "icons":
+        thumbnailBuffer = await generateIconThumbnail(def.title);
+        break;
+      case "graphics":
+        thumbnailBuffer = await generateGraphicThumbnail(fileContent);
+        break;
+      case "cheatsheets":
+        thumbnailBuffer = await generateCheatsheetThumbnail(def.title, fileContent);
+        break;
+      case "wallpapers":
+        thumbnailBuffer = await generateWallpaperThumbnail(fileContent);
+        break;
+      default:
+        thumbnailBuffer = await generateIconThumbnail(def.title);
+    }
 
     // 4. Upload thumbnail to product-images bucket
     const thumbPath = `${sellerId}/${crypto.randomUUID()}.png`;
