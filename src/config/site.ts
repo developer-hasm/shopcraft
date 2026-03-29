@@ -1,6 +1,6 @@
 export const SITE_NAME = "ShopCraft";
 export const SITE_DESCRIPTION =
-  "Buy and sell digital products — templates, icons, fonts, and more.";
+  "Buy and sell digital products — templates, icons, graphics, and more.";
 
 export const LOCALE = "ko-KR" as const;
 export const CURRENCY = "KRW" as const;
@@ -14,12 +14,17 @@ export const NAV_LINKS: readonly NavLink[] = [
   { href: "/products", label: "Products" },
   { href: "/products?category=templates", label: "Templates" },
   { href: "/products?category=icons", label: "Icons" },
-  { href: "/products?category=fonts", label: "Fonts" },
+  { href: "/products?category=graphics", label: "Graphics" },
+  { href: "/products?category=cheatsheets", label: "Cheatsheets" },
 ] as const;
 
-export const FOOTER_PRODUCT_LINKS: readonly NavLink[] = NAV_LINKS.filter(
-  (link) => link.href !== "/products"
-);
+export const FOOTER_PRODUCT_LINKS: readonly NavLink[] = [
+  { href: "/products?category=templates", label: "Templates" },
+  { href: "/products?category=icons", label: "Icons" },
+  { href: "/products?category=graphics", label: "Graphics" },
+  { href: "/products?category=cheatsheets", label: "Cheatsheets" },
+  { href: "/products?category=wallpapers", label: "Wallpapers" },
+] as const;
 
 export const FOOTER_COMPANY_LINKS: readonly NavLink[] = [
   { href: "/about", label: "About" },

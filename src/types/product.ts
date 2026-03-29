@@ -1,8 +1,9 @@
 export const PRODUCT_CATEGORIES = [
   "Templates",
   "Icons",
-  "Fonts",
   "Graphics",
+  "Cheatsheets",
+  "Wallpapers",
 ] as const;
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
@@ -12,8 +13,9 @@ export const FILTER_OPTIONS = ["All", ...PRODUCT_CATEGORIES] as const;
 export const CATEGORY_EMOJI: Record<ProductCategory, string> = {
   Templates: "📄",
   Icons: "🎨",
-  Fonts: "🔤",
   Graphics: "🖼️",
+  Cheatsheets: "📋",
+  Wallpapers: "🌄",
 };
 
 /** Product list item returned from Supabase join queries */
