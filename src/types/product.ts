@@ -2,7 +2,7 @@ export const PRODUCT_CATEGORIES = [
   "Templates",
   "Icons",
   "Graphics",
-  "Cheatsheets",
+  "UI Components",
   "Wallpapers",
 ] as const;
 
@@ -14,7 +14,7 @@ export const CATEGORY_EMOJI: Record<ProductCategory, string> = {
   Templates: "📄",
   Icons: "🎨",
   Graphics: "🖼️",
-  Cheatsheets: "📋",
+  "UI Components": "🧩",
   Wallpapers: "🌄",
 };
 

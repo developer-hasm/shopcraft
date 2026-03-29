@@ -15,14 +15,14 @@ export const NAV_LINKS: readonly NavLink[] = [
   { href: "/products?category=templates", label: "Templates" },
   { href: "/products?category=icons", label: "Icons" },
   { href: "/products?category=graphics", label: "Graphics" },
-  { href: "/products?category=cheatsheets", label: "Cheatsheets" },
+  { href: "/products?category=ui-components", label: "UI Components" },
 ] as const;
 
 export const FOOTER_PRODUCT_LINKS: readonly NavLink[] = [
   { href: "/products?category=templates", label: "Templates" },
   { href: "/products?category=icons", label: "Icons" },
   { href: "/products?category=graphics", label: "Graphics" },
-  { href: "/products?category=cheatsheets", label: "Cheatsheets" },
+  { href: "/products?category=ui-components", label: "UI Components" },
   { href: "/products?category=wallpapers", label: "Wallpapers" },
 ] as const;
 

@@ -91,42 +91,13 @@ export async function generateGraphicThumbnail(
 }
 
 // ==========================================
-// Cheatsheets: Render markdown as code-style image
+// UI Components: Screenshot the HTML component
 // ==========================================
-export async function generateCheatsheetThumbnail(
-  title: string,
-  mdContent: Buffer
+export async function generateUIComponentThumbnail(
+  htmlContent: Buffer
 ): Promise<Buffer> {
-  const lines = mdContent.toString("utf-8").split("\n").slice(0, 25);
-  const lineHeight = 18;
-  const padding = 30;
-  const svgH = lines.length * lineHeight + padding * 2 + 60;
-  const svgW = 900;
-
-  const textLines = lines.map((line, i) => {
-    const y = padding + 55 + i * lineHeight;
-    const escaped = escapeXml(line);
-    const isHeading = line.startsWith("#");
-    const isTable = line.startsWith("|");
-    const isCode = line.startsWith("```");
-    const color = isHeading ? "#93c5fd" : isTable ? "#86efac" : isCode ? "#fda4af" : "#e2e8f0";
-    const weight = isHeading ? "bold" : "normal";
-    const size = isHeading ? "16" : "13";
-    return `<text x="${padding + 10}" y="${y}" font-family="Consolas, monospace" font-size="${size}" font-weight="${weight}" fill="${color}">${escaped}</text>`;
-  }).join("\n");
-
-  const svg = `<svg width="${svgW}" height="${svgH}" xmlns="http://www.w3.org/2000/svg">
-    <rect width="${svgW}" height="${svgH}" fill="#1e1e2e" rx="12"/>
-    <rect x="0" y="0" width="${svgW}" height="40" fill="#181825" rx="12"/>
-    <rect x="0" y="12" width="${svgW}" height="28" fill="#181825"/>
-    <circle cx="20" cy="20" r="6" fill="#f38ba8"/>
-    <circle cx="38" cy="20" r="6" fill="#fab387"/>
-    <circle cx="56" cy="20" r="6" fill="#a6e3a1"/>
-    <text x="${svgW / 2}" y="25" font-family="Arial" font-size="13" fill="#6c7086" text-anchor="middle">${escapeXml(title)}</text>
-    ${textLines}
-  </svg>`;
-
-  return sharp(Buffer.from(svg)).resize(WIDTH, HEIGHT, { fit: "cover" }).png().toBuffer();
+  // Same approach as templates — screenshot the actual HTML
+  return generateTemplateThumbnail(htmlContent);
 }
 
 // ==========================================

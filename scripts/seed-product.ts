@@ -12,14 +12,14 @@ import {
   generateTemplateThumbnail,
   generateIconThumbnail,
   generateGraphicThumbnail,
-  generateCheatsheetThumbnail,
+  generateUIComponentThumbnail,
   generateWallpaperThumbnail,
 } from "./generate-thumbnail";
 import {
   generateTemplate,
   generateIconSet,
   generateGraphic,
-  generateCheatsheet,
+  generateUIComponent,
   generateWallpaper,
 } from "./generate-product";
 
@@ -108,24 +108,24 @@ const PRODUCT_POOL: ProductDef[] = [
     price: 3000, categorySlug: "graphics", fileExt: "svg",
     generateFile: generateGraphic,
   },
-  // Cheatsheets
+  // UI Components
   {
-    title: "Git Command Cheatsheet",
-    description: "Complete Git reference with basic commands, branching, and advanced techniques in markdown format.",
-    price: 2000, categorySlug: "cheatsheets", fileExt: "md",
-    generateFile: generateCheatsheet,
+    title: "Button Component Pack",
+    description: "Collection of 15+ button styles: primary, secondary, danger, outline, ghost, pill, and icon buttons in multiple sizes. Copy-paste ready HTML/CSS.",
+    price: 2000, categorySlug: "ui-components", fileExt: "html",
+    generateFile: generateUIComponent,
   },
   {
-    title: "CSS Flexbox Cheatsheet",
-    description: "Visual guide to CSS Flexbox with all container and item properties, plus common patterns.",
-    price: 2000, categorySlug: "cheatsheets", fileExt: "md",
-    generateFile: generateCheatsheet,
+    title: "Card Component Collection",
+    description: "Beautiful card components for products, blog posts, and profiles. Includes hover effects, badges, and responsive grid layouts.",
+    price: 3000, categorySlug: "ui-components", fileExt: "html",
+    generateFile: generateUIComponent,
   },
   {
-    title: "React Hooks Cheatsheet",
-    description: "Quick reference for all React hooks including useState, useEffect, and React 19 new hooks.",
-    price: 3000, categorySlug: "cheatsheets", fileExt: "md",
-    generateFile: generateCheatsheet,
+    title: "Form Component Kit",
+    description: "Complete form components with inputs, textareas, selects, and validation styles. Includes contact form, login form, and signup form layouts.",
+    price: 3500, categorySlug: "ui-components", fileExt: "html",
+    generateFile: generateUIComponent,
   },
   // Wallpapers
   {
@@ -162,7 +162,7 @@ function createZipBuffer(fileName: string, fileContent: Buffer): Promise<Buffer>
   });
 }
 
-const CATEGORY_SLUGS = ["templates", "icons", "graphics", "cheatsheets", "wallpapers"];
+const CATEGORY_SLUGS = ["templates", "icons", "graphics", "ui-components", "wallpapers"];
 
 async function seedProducts() {
   // Get first seller
@@ -235,8 +235,8 @@ async function seedProducts() {
       case "graphics":
         thumbnailBuffer = await generateGraphicThumbnail(fileContent);
         break;
-      case "cheatsheets":
-        thumbnailBuffer = await generateCheatsheetThumbnail(def.title, fileContent);
+      case "ui-components":
+        thumbnailBuffer = await generateUIComponentThumbnail(fileContent);
         break;
       case "wallpapers":
         thumbnailBuffer = await generateWallpaperThumbnail(fileContent);
